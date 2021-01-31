@@ -5,14 +5,18 @@ const last50Days = Array.from(Array(50).keys()).reduce((acc, ele) => {
 	const d = moment()
 		.add(-(ele + 1), 'days')
 		.format('MM-DD-YYYY');
-	return [...acc, d];
+	return [d, ...acc];
 }, []);
 
 const url = 'https://covid19.mathdro.id/api';
 
-export const fetchData = async () => {
+export const fetchData = async (selectedCountry) => {
+	let changeableUrl = url;
+	if (selectedCountry) {
+		changeableUrl = `${url}/countries/${selectedCountry}`;
+	}
 	try {
-		const { data } = await axios.get(url);
+		const { data } = await axios.get(changeableUrl);
 		const { confirmed, recovered, deaths, lastUpdate } = data;
 
 		return {
@@ -50,4 +54,14 @@ export const fetchDailyData = async () => {
 	} catch (error) {
 		console.log(error);
 	}
+};
+
+export const fetchContries = async () => {
+	try {
+		const {
+			data: { countries },
+		} = await axios.get(`${url}/countries`);
+
+		return countries.map((country) => country.name);
+	} catch (error) {}
 };

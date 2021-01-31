@@ -82,7 +82,7 @@ export default function Cards({ data }) {
 				>
 					<CardContent>
 						<Typography color='textSecondary' gutterBottom>
-							Death
+							Deaths
 						</Typography>
 						<Typography variant='h5'>
 							<CountUp

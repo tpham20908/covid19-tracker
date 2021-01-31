@@ -4,20 +4,22 @@ import { CircularProgress } from '@material-ui/core';
 import useStyles from './styles';
 
 import { Cards, Chart, CountryPicker } from './components';
+import covid19Img from './images/covid_19.png';
 import { fetchData } from './api';
 
 const App = () => {
 	const styles = useStyles();
 	const [data, setData] = useState(null);
+	const [selectedCountry, setSelectedCountry] = useState(null);
 
 	useEffect(() => {
-		getData();
-	}, []);
+		const getData = async () => {
+			const data = await fetchData(selectedCountry);
+			setData(data);
+		};
 
-	const getData = async () => {
-		const data = await fetchData();
-		setData(data);
-	};
+		getData();
+	}, [selectedCountry]);
 
 	if (!data) {
 		return <CircularProgress />;
@@ -25,9 +27,10 @@ const App = () => {
 
 	return (
 		<div className={styles.container}>
+			<img src={covid19Img} className={styles.image} alt='Covid19' />
 			<Cards data={data} />
-			<CountryPicker />
-			<Chart />
+			<CountryPicker setSelectedCountry={setSelectedCountry} />
+			<Chart data={data} selectedCountry={selectedCountry} />
 		</div>
 	);
 };

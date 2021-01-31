@@ -5,9 +5,10 @@ import { Line, Bar } from 'react-chartjs-2';
 import useStyles from './styles';
 import { fetchDailyData } from '../../api';
 
-export default function Chart() {
+export default function Chart({ data, selectedCountry }) {
 	const styles = useStyles();
 	const [dailyData, setDailyData] = useState(null);
+	const { confirmed, recovered, deaths, lastUpdate } = data;
 
 	useEffect(() => {
 		getDailyData();
@@ -18,7 +19,41 @@ export default function Chart() {
 		setDailyData(data);
 	};
 
+	const barChart = () => {
+		if (!confirmed) {
+			return <CircularProgress />;
+		}
+
+		return (
+			<Bar
+				data={{
+					labels: ['Infected', 'Recovered', 'Deaths'],
+					datasets: [
+						{
+							label: 'People',
+							backgroundColor: ['#fcd947', '#47fc47', '#fc4747'],
+							data: [confirmed.value, recovered.value, deaths.value],
+						},
+					],
+				}}
+				options={{
+					legend: { display: false },
+					title: {
+						display: true,
+						text: `Situation in ${selectedCountry} on ${new Date(
+							lastUpdate
+						).toDateString()}`,
+					},
+				}}
+			/>
+		);
+	};
+
 	const lineChart = () => {
+		if (!dailyData) {
+			return <CircularProgress />;
+		}
+
 		return (
 			<Line
 				data={{
@@ -30,7 +65,6 @@ export default function Chart() {
 							data: dailyData.map((data) => data.confirmed),
 							label: 'Infected',
 							borderColor: '#fcd947',
-							// backgroundColor: 'rgba(255,255,0,0.1)',
 							fill: true,
 						},
 						{
@@ -53,9 +87,9 @@ export default function Chart() {
 		);
 	};
 
-	if (!dailyData) {
-		return <CircularProgress />;
-	}
-
-	return <div className={styles.container}>{lineChart()}</div>;
+	return (
+		<div className={styles.container}>
+			{selectedCountry ? barChart() : lineChart()}
+		</div>
+	);
 }

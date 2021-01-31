@@ -7,16 +7,18 @@ import useStyles from './styles';
 export default function Cards({ data }) {
 	const styles = useStyles();
 	const { confirmed, recovered, deaths, lastUpdate } = data;
-	console.log(confirmed);
 
 	return (
 		<div className={styles.container}>
-			<Grid container spacing={3} justify='center'>
+			<Grid container spacing={2} justify='center' className={styles.cards}>
+				{/* Offset md */}
+				<Grid item md={1} />
+
 				{/* Infected */}
 				<Grid
 					item
 					xs={12}
-					md={4}
+					md={3}
 					component={Card}
 					className={`${styles.card} ${styles.infected}`}
 				>
@@ -45,7 +47,7 @@ export default function Cards({ data }) {
 				<Grid
 					item
 					xs={12}
-					md={4}
+					md={3}
 					component={Card}
 					className={`${styles.card} ${styles.recovered}`}
 				>
@@ -74,7 +76,7 @@ export default function Cards({ data }) {
 				<Grid
 					item
 					xs={12}
-					md={4}
+					md={3}
 					component={Card}
 					className={`${styles.card} ${styles.deaths}`}
 				>
@@ -98,6 +100,8 @@ export default function Cards({ data }) {
 						</Typography>
 					</CardContent>
 				</Grid>
+				{/* Offset md */}
+				<Grid item md={1} />
 			</Grid>
 		</div>
 	);

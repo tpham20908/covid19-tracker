@@ -30,7 +30,7 @@ export default function Cards({ data }) {
 							<CountUp
 								start={0}
 								end={confirmed.value}
-								duration={2}
+								duration={1}
 								separator=','
 							/>
 						</Typography>
@@ -59,7 +59,7 @@ export default function Cards({ data }) {
 							<CountUp
 								start={0}
 								end={recovered.value}
-								duration={2}
+								duration={1}
 								separator=','
 							/>
 						</Typography>
@@ -88,7 +88,7 @@ export default function Cards({ data }) {
 							<CountUp
 								start={0}
 								end={deaths.value}
-								duration={2}
+								duration={1}
 								separator=','
 							/>
 						</Typography>
